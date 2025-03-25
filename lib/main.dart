@@ -5,9 +5,13 @@ import 'package:http/http.dart' as http;
 
 
 
-void main()=> runApp(CupertinoApp(home: MyApp(),));
+void main()=> runApp(
+    CupertinoApp(
+      debugShowCheckedModeBanner: false,
+      home: MyApp(),));
 
 class MyApp extends StatefulWidget {
+
   const MyApp({super.key});
 
   @override
@@ -17,9 +21,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Map<String, dynamic> weatherData = {};
 
-  String city = "";
+  String city = "Loading....";
   String temp = "";
-  String url = "https://api.openweathermap.org/data/2.5/weather?q=Baguio&appid=b2aa11fa10d2583b6a1651a3d1f6d391";
+  String humidity = "---";
+  String feelsLike = "---";
+  String url = "https://api.openweathermap.org/data/2.5/weather?q=Arayat,%20Pampanga&appid=b2aa11fa10d2583b6a1651a3d1f6d391";
 
   Future<void> getData() async {
     final response = await http.get(
@@ -30,9 +36,11 @@ class _MyAppState extends State<MyApp> {
       weatherData = jsonDecode(response.body);
       city = weatherData["name"];
       temp = (weatherData["main"]["temp"] - 273.15).toStringAsFixed(1) + "°";
+      humidity = weatherData["main"]["humidity"].toString();
+      feelsLike = (weatherData["main"]["feels_like"] - 273.15).toStringAsFixed(1) + "°";
 
     });
-    print(weatherData["main"]["temp"]);
+    print(weatherData["main"]["humidity"]);
   }
   @override
 
@@ -53,9 +61,9 @@ class _MyAppState extends State<MyApp> {
           Row(
               mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Humidity: 86%"),
+              Text("Humidity: $humidity"),
               SizedBox(width: 100,),
-              Text('Feels Like: 40°')
+              Text('Feels Like: $feelsLike')
             ],
           )
         ],
