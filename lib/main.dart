@@ -25,7 +25,8 @@ class _MyAppState extends State<MyApp> {
   String temp = "";
   String humidity = "---";
   String feelsLike = "---";
-  String url = "https://api.openweathermap.org/data/2.5/weather?q=Arayat,%20Pampanga&appid=b2aa11fa10d2583b6a1651a3d1f6d391";
+  IconData? weatherIcon;
+  String url = "https://api.openweathermap.org/data/2.5/weather?q=Baguio&appid=b2aa11fa10d2583b6a1651a3d1f6d391";
 
   Future<void> getData() async {
     final response = await http.get(
@@ -37,10 +38,16 @@ class _MyAppState extends State<MyApp> {
       city = weatherData["name"];
       temp = (weatherData["main"]["temp"] - 273.15).toStringAsFixed(1) + "°";
       humidity = weatherData["main"]["humidity"].toString();
-      feelsLike = (weatherData["main"]["feels_like"] - 273.15).toStringAsFixed(1) + "°";
+      feelsLike = (weatherData["main"]["feels_like"] - 273.15).toStringAsFixed(1) + "%";
 
+      if (weatherData["weather"][0]["main"] == "Clear") {
+        weatherIcon = CupertinoIcons.sun_max;
+      } else if (weatherData["weather"][0]["main"] == "Clouds") {
+        weatherIcon = CupertinoIcons.cloud;
+      }
     });
-    print(weatherData["main"]["humidity"]);
+    print(weatherData["weather"][0]["main"]);
+
   }
   @override
 
@@ -56,7 +63,7 @@ class _MyAppState extends State<MyApp> {
             SizedBox(height: 100,),
           Text('$city', style: TextStyle(fontSize: 50, fontWeight: FontWeight.w100),),
           Text(' $temp', style: TextStyle(fontSize: 20),),
-          Icon(CupertinoIcons.sun_max, color: CupertinoColors.systemPurple, size: 90,),
+          Icon(weatherIcon, color: CupertinoColors.systemPurple, size: 90,),
           SizedBox(height: 50,),
           Row(
               mainAxisAlignment: MainAxisAlignment.center,
