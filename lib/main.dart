@@ -18,6 +18,7 @@ class _MyAppState extends State<MyApp> {
   Map<String, dynamic> weatherData = {};
 
   String city = "";
+  String temp = "";
   String url = "https://api.openweathermap.org/data/2.5/weather?q=Baguio&appid=b2aa11fa10d2583b6a1651a3d1f6d391";
 
   Future<void> getData() async {
@@ -28,9 +29,10 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       weatherData = jsonDecode(response.body);
       city = weatherData["name"];
+      temp = (weatherData["main"]["temp"] - 273.15).toStringAsFixed(1) + "°";
 
     });
-    print(weatherData["name"]);
+    print(weatherData["main"]["temp"]);
   }
   @override
 
@@ -45,7 +47,7 @@ class _MyAppState extends State<MyApp> {
         children: [
             SizedBox(height: 100,),
           Text('$city', style: TextStyle(fontSize: 50, fontWeight: FontWeight.w100),),
-          Text(' 30°', style: TextStyle(fontSize: 20),),
+          Text(' $temp', style: TextStyle(fontSize: 20),),
           Icon(CupertinoIcons.sun_max, color: CupertinoColors.systemPurple, size: 90,),
           SizedBox(height: 50,),
           Row(
