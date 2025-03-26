@@ -79,7 +79,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 _buildTile(
                   title: "Location",
                   icon: CupertinoIcons.location,
-                  color: selectedColor,
+                  color: Colors.orange,
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -98,7 +98,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 _buildTile(
                   title: "Metric System",
                   icon: CupertinoIcons.thermometer,
-                  color: selectedColor,
+                  color: Colors.yellow,
                   trailing: CupertinoSwitch(
                     value: isMetric,
                     onChanged: (value) => updateSettings(city, value),
