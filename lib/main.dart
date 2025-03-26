@@ -72,3 +72,20 @@ class _MyAppState extends State<MyApp> {
       showErrorDialog(newCity);
     }
   }
+
+  void showErrorDialog(String invalidCity) {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: Text("Invalid Location"),
+        content: Text("The location '$invalidCity' is not valid. Please try again."),
+        actions: [
+          CupertinoDialogAction(
+            child: Text("OK"),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+  }
+
