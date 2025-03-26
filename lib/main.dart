@@ -135,4 +135,26 @@ class _MyAppState extends State<MyApp> {
                 city,
                 style: TextStyle(fontSize: 50, fontWeight: FontWeight.w100),
               ),
+              Text(
+                temp.toStringAsFixed(1) + (isMetric ? "°C" : "°F"),
+                style: TextStyle(fontSize: 20),
+              ),
+              Icon(weatherIcon, color: CupertinoColors.systemPurple, size: 90),
+              SizedBox(height: 50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Humidity: $humidity%"),
+                  SizedBox(width: 100),
+                  Text('Feels Like: $feelsLike')
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 
