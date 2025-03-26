@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart'; // For formatting time
+import 'settings.dart';
+import 'package:flutter/material.dart';
 
 import 'settings.dart';
 
@@ -32,7 +34,10 @@ class _MyAppState extends State<MyApp> {
   String sunriseTime = "---";
   String sunsetTime = "---";
   IconData? weatherIcon;
-  bool isMetric = true; // Default to Celsius
+  bool isMetric = true;
+  Color iconColor = Colors.blue;
+
+
 
   @override
   void initState() {
@@ -127,9 +132,11 @@ class _MyAppState extends State<MyApp> {
         builder: (context) => SettingsPage(
           currentCity: city,
           isMetric: isMetric,
-          onSettingsChanged: (newCity, newMetric) {
+          iconColor: iconColor,
+          onSettingsChanged: (newCity, newMetric, newColor) {
             setState(() {
               isMetric = newMetric;
+              iconColor = newColor;
             });
             getData(newCity); // Only fetch data if city is valid
           },
@@ -152,7 +159,7 @@ class _MyAppState extends State<MyApp> {
           child: Icon(
             CupertinoIcons.settings,
             size: 19,
-            color: CupertinoColors.systemPurple,
+            color: iconColor,
           ),
           onPressed: openSettings,
         ),
@@ -170,7 +177,7 @@ class _MyAppState extends State<MyApp> {
                 temp.toStringAsFixed(1) + (isMetric ? "°C" : "°F"),
                 style: TextStyle(fontSize: 50),
               ),
-              Icon(weatherIcon, color: CupertinoColors.systemPurple, size: 90),
+              Icon(weatherIcon, color: iconColor, size: 90),
               SizedBox(height: 10),
               Text(
                 description, // Displays weather condition
