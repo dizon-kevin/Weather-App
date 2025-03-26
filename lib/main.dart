@@ -11,6 +11,7 @@ void main() => runApp(
       CupertinoApp(
         debugShowCheckedModeBanner: false,
         home: MyApp(),
+        theme: CupertinoThemeData(brightness: Brightness.dark),
       ),
     );
 
@@ -36,6 +37,7 @@ class _MyAppState extends State<MyApp> {
   IconData? weatherIcon;
   bool isMetric = true;
   Color iconColor = Colors.blue;
+  bool isLightMode = false;
 
 
 
@@ -133,10 +135,12 @@ class _MyAppState extends State<MyApp> {
           currentCity: city,
           isMetric: isMetric,
           iconColor: iconColor,
-          onSettingsChanged: (newCity, newMetric, newColor) {
+          isLightMode: isLightMode,
+          onSettingsChanged: (newCity, newMetric, newColor, newTheme) {
             setState(() {
               isMetric = newMetric;
               iconColor = newColor;
+              isLightMode = newTheme;
             });
             getData(newCity); // Only fetch data if city is valid
           },
@@ -147,7 +151,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
+    return CupertinoApp(
+       debugShowCheckedModeBanner: false,
+        theme: CupertinoThemeData(
+        brightness: isLightMode ? Brightness.light : Brightness.dark,
+    ),
+
+      home : CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         backgroundColor: CupertinoColors.black,
         middle: Text(
@@ -224,6 +234,7 @@ class _MyAppState extends State<MyApp> {
             ],
           ),
         ),
+      ),
       ),
     );
   }

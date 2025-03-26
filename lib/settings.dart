@@ -5,12 +5,14 @@ class SettingsPage extends StatefulWidget {
   final String currentCity;
   final bool isMetric;
   final Color iconColor;
-  final Function(String, bool, Color) onSettingsChanged;
+  final bool isLightMode;
+  final Function(String, bool, Color, bool) onSettingsChanged;
 
   const SettingsPage({
     required this.currentCity,
     required this.isMetric,
     required this.iconColor,
+    required this.isLightMode,
     required this.onSettingsChanged,
     Key? key,
   }) : super(key: key);
@@ -20,9 +22,10 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  late Color selectedColor; // Holds selected color
+  late Color selectedColor;
   late String city;
   late bool isMetric;
+  late bool isLightMode;
 
   @override
   void initState() {
@@ -30,10 +33,11 @@ class _SettingsPageState extends State<SettingsPage> {
     city = widget.currentCity;
     isMetric = widget.isMetric;
     selectedColor = widget.iconColor;
+    isLightMode = widget.isLightMode;
   }
 
   void updateSettings(String newCity, bool newMetric) {
-    widget.onSettingsChanged(newCity, newMetric, selectedColor);
+    widget.onSettingsChanged(newCity, newMetric, selectedColor, isLightMode);
     setState(() {
       city = newCity;
       isMetric = newMetric;
@@ -42,65 +46,105 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        backgroundColor: CupertinoColors.black,
-        middle: Text("Settings", style: TextStyle(color: CupertinoColors.white)),
+    return CupertinoApp(
+      debugShowCheckedModeBanner: false,
+      theme: CupertinoThemeData(
+        brightness: isLightMode ? Brightness.light : Brightness.dark,
       ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: CupertinoListSection.insetGrouped(
-            backgroundColor: CupertinoColors.black,
-            children: [
-              _buildTile(
-                title: "Location",
-                icon: CupertinoIcons.location,
-                color: selectedColor,
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      city,
-                      style: const TextStyle(color: CupertinoColors.activeBlue),
-                    ),
-                    SizedBox(width: 5), // Adds spacing between text and icon
-                    Icon(
-                      CupertinoIcons.chevron_forward,
-                      color: CupertinoColors.systemGrey,
-                      size: 18, // Adjust the size if needed
-                    ),
-                  ],
+      home: CupertinoPageScaffold(
+        backgroundColor: isLightMode ? CupertinoColors.white : CupertinoColors.black, // ✅ Background change
+        navigationBar: CupertinoNavigationBar(
+          backgroundColor: isLightMode ? CupertinoColors.systemGrey6 : CupertinoColors.black,
+          leading: CupertinoButton(
+            padding: EdgeInsets.zero,
+            child: Icon(
+              CupertinoIcons.chevron_back,
+              color: isLightMode ? CupertinoColors.black : CupertinoColors.white, // ✅ Adjusts color dynamically
+            ),
+            onPressed: () => Navigator.pop(context), // ✅ Navigates back when pressed
+          ),
+          middle: Text(
+            "Settings",
+            style: TextStyle(
+              color: isLightMode ? CupertinoColors.black : CupertinoColors.white,
+            ),
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: CupertinoListSection.insetGrouped(
+              backgroundColor: isLightMode ? CupertinoColors.systemGrey5 : CupertinoColors.black, // ✅ Dynamic change
+              children: [
+                _buildTile(
+                  title: "Location",
+                  icon: CupertinoIcons.location,
+                  color: selectedColor,
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        city,
+                        style: TextStyle(
+                          color: isLightMode ? CupertinoColors.activeBlue : CupertinoColors.white,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      const Icon(CupertinoIcons.chevron_forward, color: CupertinoColors.systemGrey, size: 18),
+                    ],
+                  ),
+                  onTap: _showLocationDialog,
                 ),
-                onTap: () => _showLocationDialog(),
-              ),
-              _buildTile(
-                title: "Metric System",
-                icon: CupertinoIcons.thermometer,
-                color: selectedColor,
-                trailing: CupertinoSwitch(
-                  value: isMetric,
-                  onChanged: (value) => updateSettings(city, value),
-                ),
-                additionalInfo: Text(isMetric ? "Celsius" : "Fahrenheit"),
-              ),
-              _buildTile(
-                title: "Icon Color",
-                icon: CupertinoIcons.paintbrush,
-                color: selectedColor, // Display selected color
-                trailing: Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: selectedColor,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: CupertinoColors.white, width: 1),
+                _buildTile(
+                  title: "Metric System",
+                  icon: CupertinoIcons.thermometer,
+                  color: selectedColor,
+                  trailing: CupertinoSwitch(
+                    value: isMetric,
+                    onChanged: (value) => updateSettings(city, value),
+                  ),
+                  additionalInfo: Text(
+                    isMetric ? "Celsius" : "Fahrenheit",
+                    style: TextStyle(
+                      color: isLightMode ? CupertinoColors.black : CupertinoColors.white,
+                    ),
                   ),
                 ),
-                onTap: _showColorPickerDialog, // Open color picker dialog
-              ),
+                _buildTile(
+                  title: "Icon Color",
+                  icon: CupertinoIcons.paintbrush,
+                  color: selectedColor,
+                  trailing: Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      color: selectedColor,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: isLightMode ? CupertinoColors.black : CupertinoColors.white,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  onTap: _showColorPickerDialog,
+                ),
+                _buildTile(
+                  title: "Light Mode",
+                  icon: CupertinoIcons.sun_max_fill,
+                  color: isLightMode ? Colors.yellow : Colors.grey,
+                  trailing: CupertinoSwitch(
+                    value: isLightMode,
+                    onChanged: (value) {
+                      setState(() {
+                        isLightMode = value;
+                      });
+                      widget.onSettingsChanged(city, isMetric, selectedColor, isLightMode);
+                    },
+                  ),
+                ),
 
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -115,10 +159,16 @@ class _SettingsPageState extends State<SettingsPage> {
     Widget? additionalInfo,
     VoidCallback? onTap,
   }) {
+
     return CupertinoListTile(
-      title: Text(title, style: const TextStyle(color: CupertinoColors.white)),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: isLightMode ? CupertinoColors.black : CupertinoColors.white, // ✅ Dynamic text color
+        ),
+      ),
       leading: Container(
-        width: 36, // Adjusted size
+        width: 36,
         height: 36,
         decoration: BoxDecoration(
           color: color,
@@ -131,6 +181,7 @@ class _SettingsPageState extends State<SettingsPage> {
       onTap: onTap,
     );
   }
+
   void _showColorPickerDialog() {
     showCupertinoModalPopup(
       context: context,
@@ -162,7 +213,7 @@ class _SettingsPageState extends State<SettingsPage> {
         setState(() {
           selectedColor = color;
         });
-        widget.onSettingsChanged(city, isMetric, selectedColor); // Update main.dart
+        widget.onSettingsChanged(city, isMetric, selectedColor, isLightMode);
         Navigator.pop(context);
       },
     );
