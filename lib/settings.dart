@@ -19,3 +19,18 @@ class _SettingsPageState extends State<SettingsPage> {
   late String city;
   late bool isMetric;
 
+   @override
+  void initState() {
+    super.initState();
+    city = widget.currentCity;
+    isMetric = widget.isMetric;
+  }
+
+  void updateSettings(String newCity, bool newMetric) {
+    widget.onSettingsChanged(newCity, newMetric);
+    setState(() {
+      city = newCity;
+      isMetric = newMetric;
+    });
+  }
+
