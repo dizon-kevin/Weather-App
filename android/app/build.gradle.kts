@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.iweather.app"
+    namespace = "com.iweather.devops"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.iweather.app"
+        applicationId = "com.iweather.devops"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
