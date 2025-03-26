@@ -31,6 +31,9 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
+key.properties
+*.keystore
+keystore.b64
 /build/
 
 # Symbolication related
