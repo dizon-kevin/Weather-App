@@ -89,3 +89,21 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  void openSettings() async {
+    await Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => SettingsPage(
+          currentCity: city,
+          isMetric: isMetric,
+          onSettingsChanged: (newCity, newMetric) {
+            setState(() {
+              isMetric = newMetric;
+            });
+            getData(newCity); // Only fetch data if city is valid
+          },
+        ),
+      ),
+    );
+  }
+
