@@ -149,6 +149,18 @@ class _SettingsPageState extends State<SettingsPage> {
                   trailing: const Icon(CupertinoIcons.chevron_forward, color: CupertinoColors.systemGrey, size: 18),
                   onTap: _showDevelopersDialog,
                 ),
+                _buildTile(
+                  title: "About",
+                  icon: CupertinoIcons.info_circle_fill,
+                  color: Colors.green,
+                  trailing: Text(
+                    "v1.0.0",
+                    style: TextStyle(
+                      color: isLightMode ? CupertinoColors.black : CupertinoColors.white,
+                    ),
+                  ),
+                  onTap: _showAboutDialog,
+                ),
               ],
             ),
           ),
@@ -272,6 +284,29 @@ class _SettingsPageState extends State<SettingsPage> {
               Text("• Luriz, Jenzelle"),
               Text("• Macapagal, Marc Lawrence"),
               Text("• Venasquez, Charles Harold"),
+            ],
+          ),
+          actions: [
+            CupertinoDialogAction(
+              child: const Text("OK"),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _showAboutDialog() {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text("About"),
+          content: Column(
+            children: const [
+              Text("WeatherApp v1.0.0"),
+              Text("Released: March 2025"),
+              Text("Provides real-time weather updates."),
             ],
           ),
           actions: [
