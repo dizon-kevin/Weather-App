@@ -142,7 +142,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
                 ),
-
+                _buildTile(
+                  title: "Developers",
+                  icon: CupertinoIcons.person_2_fill,
+                  color: Colors.blue,
+                  trailing: const Icon(CupertinoIcons.chevron_forward, color: CupertinoColors.systemGrey, size: 18),
+                  onTap: _showDevelopersDialog,
+                ),
               ],
             ),
           ),
@@ -246,6 +252,32 @@ class _SettingsPageState extends State<SettingsPage> {
                 updateSettings(controller.text, isMetric);
                 Navigator.pop(context);
               },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _showDevelopersDialog() {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text("Developers"),
+          content: Column(
+            children: const [
+              Text("• Cruz, John Eric"),
+              Text("• Dizon, Kevin"),
+              Text("• Juantas, Cris Gabriel"),
+              Text("• Luriz, Jenzelle"),
+              Text("• Macapagal, Marc Lawrence"),
+              Text("• Venasquez, Charles Harold"),
+            ],
+          ),
+          actions: [
+            CupertinoDialogAction(
+              child: const Text("OK"),
+              onPressed: () => Navigator.pop(context),
             ),
           ],
         );
