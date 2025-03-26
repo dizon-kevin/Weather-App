@@ -81,5 +81,23 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
             ),
+            CupertinoListTile(
+              title: Text("Temperature Unit"),
+              leading: Icon(CupertinoIcons.thermometer),
+              trailing: CupertinoSwitch(
+                value: isMetric,
+                onChanged: (value) {
+                  updateSettings(city, value);
+                },
+              ),
+              additionalInfo: Text(isMetric ? "Celsius" : "Fahrenheit"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 
 
