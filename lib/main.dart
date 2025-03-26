@@ -107,3 +107,23 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        backgroundColor: CupertinoColors.black,
+        middle: Text(
+          "iWeather",
+          style: TextStyle(color: CupertinoColors.white, fontSize: 18),
+        ),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          child: Icon(
+            CupertinoIcons.settings,
+            size: 19,
+            color: CupertinoColors.systemPurple,
+          ),
+          onPressed: openSettings,
+        ),
+      ),
+
