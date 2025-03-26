@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
   String humidity = "---";
   String feelsLike = "---";
   IconData? weatherIcon;
-  String url = "https://api.openweathermap.org/data/2.5/weather?q=Baguio&appid=b2aa11fa10d2583b6a1651a3d1f6d391";
+  String url = "https://api.openweathermap.org/data/2.5/weather?q=Arayat&appid=b2aa11fa10d2583b6a1651a3d1f6d391";
 
   Future<void> getData() async {
     final response = await http.get(
@@ -57,7 +57,27 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(child: SafeArea(child: Center(
+    return CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          backgroundColor: CupertinoColors.black,
+          middle: Text(
+            "iWeather",
+            style: TextStyle(color: CupertinoColors.white, fontSize: 18),
+          ),
+          trailing: CupertinoButton(
+            padding: EdgeInsets.zero,
+            child: Icon(
+              CupertinoIcons.settings,
+              size: 19,
+              color: CupertinoColors.systemPurple,
+            ),
+            onPressed: () {
+              // Add your navigation to the settings page here.
+            },
+          ),
+        ),
+
+        child: SafeArea(child: Center(
       child: Column(
         children: [
             SizedBox(height: 100,),
@@ -73,6 +93,7 @@ class _MyAppState extends State<MyApp> {
               Text('Feels Like: $feelsLike')
             ],
           )
+
         ],
       ),
     )));
