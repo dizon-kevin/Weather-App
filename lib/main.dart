@@ -126,4 +126,13 @@ class _MyAppState extends State<MyApp> {
           onPressed: openSettings,
         ),
       ),
+      child: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(height: 100),
+              Text(
+                city,
+                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w100),
+              ),
 
